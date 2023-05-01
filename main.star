@@ -2,33 +2,34 @@
 
 default = import_module("github.com/kurtosis-tech/readyset-package/default.star")
 
-UPSTREAM_DB_URL = "upstream_db_url"
-STANDALONE = "standalone"
-QUERY_CACHING = "query_caching"
-DATABASE_TYPE = "database_type"
-DEPLOYMENT = "deployment"
-LISTEN_PORT = "listen_port"
-SERVICE_NAME = "service_name"
+UPSTREAM_DB_URL_KEY = "upstream_db_url"
+STANDALONE_KEY = "standalone"
+QUERY_CACHING_KEY = "query_caching"
+DATABASE_TYPE_KEY = "database_type"
+DEPLOYMENT_KEY = "deployment"
+LISTEN_PORT_KEY = "listen_port"
+SERVICE_NAME_KEY = "service_name"
 
-READYSET_PORT_NAME = "ready_set_port"
+READYSET_PORT_NAME_KEY = "ready_set_port"
+
 def run(plan, args):
     # Parsing arguments
-    upstream_url = args.get(UPSTREAM_DB_URL, "")
+    upstream_url = args.get(UPSTREAM_DB_URL_KEY, "")
     if upstream_url == "":
         return "Required parameter `UPSTREAM_DB_URL` is missing"
     
-    standalone = args.get(STANDALONE, default.STANDALONE)
-    query_caching = args.get(QUERY_CACHING, default.QUERY_CACHING)
-    database_type = args.get(DATABASE_TYPE, default.DATABASE_TYPE)
-    deployment = args.get(DEPLOYMENT, default.DEPLOYMENT)
-    service_name = args.get(SERVICE_NAME, default.SERVICE_NAME)
-    listen_port = args.get(LISTEN_PORT, default.LISTEN_PORT)
+    standalone = args.get(STANDALONE_KEY, default.STANDALONE)
+    query_caching = args.get(QUERY_CACHING_KEY, default.QUERY_CACHING)
+    database_type = args.get(DATABASE_TYPE_KEY, default.DATABASE_TYPE)
+    deployment = args.get(DEPLOYMENT_KEY, default.DEPLOYMENT)
+    service_name = args.get(SERVICE_NAME_KEY, default.SERVICE_NAME)
+    listen_port = args.get(LISTEN_PORT_KEY, default.LISTEN_PORT)
 
     # Create Service Config object for ReadySet
     ready_set_service_config = ServiceConfig(
         image=default.DEFAULT_IMAGE_NAME,
         ports={
-            READYSET_PORT_NAME: PortSpec(
+            READYSET_PORT_NAME_KEY: PortSpec(
                 number=listen_port, 
                 application_protocol=default.APPLICATION_PROTOCOL,
             )
