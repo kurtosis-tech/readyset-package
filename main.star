@@ -7,7 +7,7 @@ STANDALONE = "standalone"
 QUERY_CACHING = "query_caching"
 DATABASE_TYPE = "database_type"
 DEPLOYMENT = "deployment"
-LISTEN_ADDRESS = "listen"
+LISTEN_PORT = "listen_port"
 SERVICE_NAME = "service_name"
 
 READYSET_PORT_NAME = "ready_set_port"
@@ -21,21 +21,21 @@ def run(plan, args):
     query_caching = args.get(QUERY_CACHING, default.QUERY_CACHING)
     database_type = args.get(DATABASE_TYPE, default.DATABASE_TYPE)
     deployment = args.get(DEPLOYMENT, default.DEPLOYMENT)
-    listen_address = args.get(LISTEN_ADDRESS, default.LISTEN_ADDRESS)
     service_name = args.get(SERVICE_NAME, default.SERVICE_NAME)
+    listen_port = args.get(LISTEN_PORT, default.LISTEN_PORT)
 
     # Create Service Config object for ReadySet
     ready_set_service_config = ServiceConfig(
         image=default.DEFAULT_IMAGE_NAME,
         ports={
             READYSET_PORT_NAME: PortSpec(
-                number=default.DEFAULT_READYSET_PORT_NUMBER, 
+                number=listen_port, 
                 application_protocol=default.APPLICATION_PROTOCOL,
             )
         },
         env_vars={
             "STANDALONE": standalone,
-            "LISTEN_ADDRESS": listen_address,
+            "LISTEN_ADDRESS": "0.0.0.0:" + str(listen_port),
             "QUERY_CACHING": query_caching,
             "DATABASE_TYPE": database_type,
             "UPSTREAM_DB_URL": upstream_url,
