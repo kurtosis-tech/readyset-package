@@ -14,9 +14,15 @@ READYSET_PORT_NAME_KEY = "ready_set_port"
 
 def run(plan, args):
     # Parsing arguments
-    upstream_url = args.get(UPSTREAM_DB_URL_KEY, "")
-    if upstream_url == "":
+    upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
+    if upstream_url is None:
         return "Required parameter `UPSTREAM_DB_URL` is missing"
+
+    conn_token1 = upstream_url.find("@")
+    conn_token2 = upstream_url.rfind("/")
+
+    if conn_token1 < 0 or conn_token[2]:
+        return "Misconfigured `upstream_url` - The `upstream_url` should look like `postgresql://<user>:<password>@hostname[:port]/database[?extra_options]` "  
     
     standalone = args.get(STANDALONE_KEY, default.STANDALONE)
     query_caching = args.get(QUERY_CACHING_KEY, default.QUERY_CACHING)
@@ -48,10 +54,7 @@ def run(plan, args):
         name=service_name, 
         config=ready_set_service_config
     )
-
-    token1 = upstream_url.find("@")
-    token2 = upstream_url.rfind("/")
-    
-    port_string = ":" + str(readyset.ports[READYSET_PORT_NAME].number)
+ 
+    port_string = ":" + str(readyset.ports[READYSET_PORT_NAME_KEY].number)
     readyset_url = upstream_url[:token1+1] + readyset.ip_address + port_string + upstream_url[token2:]
     return readyset_url
