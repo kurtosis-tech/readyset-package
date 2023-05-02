@@ -17,7 +17,8 @@ def run(plan, args):
     # Parsing arguments
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
     if upstream_url == None:
-        fail("Required parameter `UPSTREAM_DB_URL` is missing")
+        upstream_url = url
+        #fail("Required parameter `UPSTREAM_DB_URL` is missing")
 
     conn_token1 = upstream_url.find("@")
     conn_token2 = upstream_url.rfind("/")
