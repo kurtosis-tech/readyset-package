@@ -1,6 +1,7 @@
 # NOTE: If you're a VSCode user, you might like our VSCode extension: https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension
 
 default = import_module("github.com/kurtosis-tech/readyset-package/default.star")
+postgres = import_module("github.com/kurtosis-tech/postgres-package/main.star")
 
 UPSTREAM_DB_URL_KEY = "upstream_db_url"
 STANDALONE_KEY = "standalone"
@@ -14,15 +15,16 @@ READYSET_PORT_NAME_KEY = "ready_set_port"
 
 def run(plan, args):
     # Parsing arguments
+
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
     if upstream_url == None:
-        return "Required parameter `UPSTREAM_DB_URL` is missing"
+        fail("Required parameter `UPSTREAM_DB_URL` is missing")
 
     conn_token1 = upstream_url.find("@")
     conn_token2 = upstream_url.rfind("/")
 
     if conn_token1 < 0 or conn_token2 < 0 or conn_token2 < conn_token1:
-        return "Misconfigured `upstream_url` - The `upstream_url` should look like `postgresql://<user>:<password>@<hostname>:<port>/<database?[?<extra_options>]` "  
+        fail("Misconfigured `upstream_url` - The `upstream_url` should look like `postgresql://<user>:<password>@<hostname>:<port>/<database?[?<extra_options>]`")
     
     standalone = args.get(STANDALONE_KEY, default.STANDALONE)
     query_caching = args.get(QUERY_CACHING_KEY, default.QUERY_CACHING)
@@ -57,4 +59,8 @@ def run(plan, args):
  
     port_string = ":" + str(readyset.ports[READYSET_PORT_NAME_KEY].number)
     readyset_url = upstream_url[:conn_token1+1] + readyset.ip_address + port_string + upstream_url[conn_token2:]
-    return readyset_url
+     
+    return struct(
+        service=readyset,
+        url=readyset_url
+    )
