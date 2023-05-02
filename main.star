@@ -15,7 +15,6 @@ READYSET_PORT_NAME_KEY = "ready_set_port"
 
 def run(plan, args):
     # Parsing arguments
-
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
     if upstream_url == None:
         fail("Required parameter `UPSTREAM_DB_URL` is missing")
