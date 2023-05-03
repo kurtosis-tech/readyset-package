@@ -9,7 +9,7 @@ Assuming that you have either `postgres` or `mysql` database running, replace `U
 
 **IMPORTANT: Do not use `localhost` or `127.0.0.1`, instead use the IP Address as `hostname` for `upstream_db_url`.**
 
-The schema for creating connection string is show below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
+The schema for creating a connection string is shown below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
 
 ```
 [postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database>[?<extra_options>]
@@ -37,15 +37,10 @@ NOTE: the `//` lines are not valid JSON; you will need to remove them!
 {
     // the underlying database url (required)
     "upstream_db_url": "mysql://root:password@hostname/database", // replace with your database url
-    
     "standalone": "1",
-    
     "query_caching": "explicit",
-    
     "deployment": "kurtosis-readyset-deployment",
-    
     "listen_port": "3307",
-
     "service_name": "readyset"
 }
 ```

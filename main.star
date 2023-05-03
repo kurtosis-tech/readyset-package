@@ -11,7 +11,7 @@ SERVICE_NAME_KEY = "service_name"
 
 READYSET_PORT_NAME_KEY = "ready_set_port"
 
-ERROR_MESSAGE = "`upstream_db_url` is not configured properly. The `upstream_db_url` should match the `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`"
+ERROR_MESSAGE = "`upstream_db_url` is not configured properly. The `upstream_db_url` should match the pattern `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`"
 
 def run(plan, args):
     # Parsing arguments
