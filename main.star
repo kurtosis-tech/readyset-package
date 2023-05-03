@@ -11,6 +11,8 @@ SERVICE_NAME_KEY = "service_name"
 
 READYSET_PORT_NAME_KEY = "ready_set_port"
 
+ERROR_MESSAGE = "`upstream_db_url` is not configured properly. The `upstream_db_url` should match the `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`"
+
 def run(plan, args):
     # Parsing arguments
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
@@ -22,15 +24,19 @@ def run(plan, args):
     conn_token3 = upstream_url.find(":")
 
     if conn_token1 < 0 or conn_token2 < 0 or conn_token2 < conn_token1 or conn_token3 < 0:
-        fail("Misconfigured `upstream_db_url`. The `upstream_db_url` should look like `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
+        fail(ERROR_MESSAGE)
     
     application_protocol = upstream_url[:conn_token3]
     if application_protocol != "postgresql" and application_protocol != "mysql":
-        fail("Misconfigured `upstream_db_url.`This is the `upstream_db_url` spec where application protocol is not `postgresql` or `mysql`: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
+        fail(ERROR_MESSAGE)
 
-    listen_port = args.get(LISTEN_PORT_KEY, default.MYSQL_DEFAULT_LISTEN_PORT):
-    if application_protocol == "postgresql":
-        listen_port = default.POSTGRES_DEFAULT_LISTEN_PORT
+    listen_port = args.get(LISTEN_PORT_KEY, None):
+
+    if listen_port == None:
+        if application_protocol == "postgresql":
+            listen_port = default.POSTGRES_DEFAULT_LISTEN_PORT
+        else:
+            listen_port = default.MYSQL_DEFAULT_LISTEN_PORT
 
     standalone = args.get(STANDALONE_KEY, default.STANDALONE)
     deployment = args.get(DEPLOYMENT_KEY, default.DEPLOYMENT)

@@ -1,4 +1,4 @@
-My Package
+Readyset Package
 ============
 This is a [Kurtosis package](https://docs.kurtosis.com/concepts-reference/packages). It allows you to run [`readyset`](https://readyset.io/) cache which can improve performance for your `SQL` queries.
 
@@ -9,7 +9,7 @@ Assuming that you have either `postgres` or `mysql` database running, replace `U
 
 **IMPORTANT: Do not use `localhost` or `127.0.0.1`, instead use the IP Address as `hostname` for `upstream_db_url`.**
 
-The schema for connection string is show below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
+The schema for creating connection string is show below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
 
 ```
 [postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database>[?<extra_options>]
