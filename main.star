@@ -17,7 +17,7 @@ def run(plan, args):
     # Parsing arguments
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
     if upstream_url == None:
-        fail("Required parameter `UPSTREAM_DB_URL` is missing: It should like: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
+        fail("Required parameter `UPSTREAM_DB_URL` is missing: It should match the pattern `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
 
     conn_token1 = upstream_url.find("@")
     conn_token2 = upstream_url.rfind("/")
