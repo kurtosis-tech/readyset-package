@@ -5,5 +5,4 @@ SERVICE_NAME = "readyset"
 STANDALONE = "1"
 LISTEN_PORT = 3307
 QUERY_CACHING = "explicit"
-DATABASE_TYPE = "mysql"
 DEPLOYMENT = "kurtosis-readyset-deployment"

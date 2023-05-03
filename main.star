@@ -15,18 +15,18 @@ def run(plan, args):
     # Parsing arguments
     upstream_url = args.get(UPSTREAM_DB_URL_KEY, None)
     if upstream_url == None:
-        fail("Required parameter `UPSTREAM_DB_URL` is missing: It should like: `[postgresql|mysql]://<user>:<password>@<hostname>:<port>/<database?[?<extra_options>]`")
+        fail("Required parameter `UPSTREAM_DB_URL` is missing: It should like: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
 
     conn_token1 = upstream_url.find("@")
     conn_token2 = upstream_url.rfind("/")
     conn_token3 = upstream_url.find(":")
 
     if conn_token1 < 0 or conn_token2 < 0 or conn_token2 < conn_token1 or conn_token3 < 0:
-        fail("Misconfigured `upstream_db_url`. The `upstream_db_url` should look like `[postgresql|mysql]://<user>:<password>@<hostname>:<port>/<database?[?<extra_options>]`")
+        fail("Misconfigured `upstream_db_url`. The `upstream_db_url` should look like `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
     
     application_protocol = upstream_url[:conn_token3]
     if application_protocol != "postgresql" and application_protocol != "mysql":
-        fail("Misconfigured `upstream_db_url.`This is the `upstream_db_url` spec where application protocol is not `postgresql` or `mysql`: `[postgresql|mysql]://<user>:<password>@<hostname>:<port>/<database?[?<extra_options>]`")
+        fail("Misconfigured `upstream_db_url.`This is the `upstream_db_url` spec where application protocol is not `postgresql` or `mysql`: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
 
     standalone = args.get(STANDALONE_KEY, default.STANDALONE)
     deployment = args.get(DEPLOYMENT_KEY, default.DEPLOYMENT)
