@@ -28,9 +28,12 @@ def run(plan, args):
     if application_protocol != "postgresql" and application_protocol != "mysql":
         fail("Misconfigured `upstream_db_url.`This is the `upstream_db_url` spec where application protocol is not `postgresql` or `mysql`: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`")
 
+    listen_port = args.get(LISTEN_PORT_KEY, default.MYSQL_DEFAULT_LISTEN_PORT):
+    if application_protocol == "postgresql":
+        listen_port = default.POSTGRES_DEFAULT_LISTEN_PORT
+
     standalone = args.get(STANDALONE_KEY, default.STANDALONE)
     deployment = args.get(DEPLOYMENT_KEY, default.DEPLOYMENT)
-    listen_port = args.get(LISTEN_PORT_KEY, default.LISTEN_PORT)
     service_name = args.get(SERVICE_NAME_KEY, default.SERVICE_NAME)
     query_caching = args.get(QUERY_CACHING_KEY, default.QUERY_CACHING)
 

@@ -44,7 +44,7 @@ NOTE: the `//` lines are not valid JSON; you will need to remove them!
     
     "deployment": "kurtosis-readyset-deployment",
     
-    "listen_port": "3306",
+    "listen_port": "3307",
 
     "service_name": "readyset"
 }
