@@ -1,22 +1,25 @@
 My Package
 ============
-This is a [Kurtosis package](https://docs.kurtosis.com/concepts-reference/packages). It allows you to run `readyset` cache which can improve performance for your `SQL` queries.
+This is a [Kurtosis package](https://docs.kurtosis.com/concepts-reference/packages). It allows you to run [`readyset`](https://readyset.io/) cache which can improve performance for your `SQL` queries.
 
 Run this package
 ----------------
-If you have [Kurtosis installed][install-kurtosis], run:
 
 Assuming that you have either `postgres` or `mysql` database running, replace `UPSTREAM_DB_URL_CONNECTION_STRING` with your connection string. 
 
-This is the schema for connection string: `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database>[?<extra_options>]`. For more information, refer to `readyset` documentation.
+**IMPORTANT: Do not use `localhost` or `127.0.0.1`, instead use the IP Address as `hostname` for `upstream_db_url`.**
+
+The schema for connection string is show below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
+
+```
+[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database>[?<extra_options>]
+```
+
+If you have [Kurtosis installed][install-kurtosis], run:
 
 ```bash
 kurtosis run github.com/kurtosis-tech/readyset-package '{"upstream_db_url": "UPSTREAM_DB_URL_CONNECTION_STRING"}'
 ```
-
-<!-- TODO Add a URL-encoded version of github.com/YOURUSER/THISREPO to right after "KURTOSIS_PACKAGE_LOCATOR=" in the link below -->
-<!-- TODO You can URL-encode a string using https://www.urlencoder.org/ -->
-If you don't have Kurtosis installed, [click here to run this package on the Kurtosis playground](https://gitpod.io/#KURTOSIS_PACKAGE_LOCATOR=/https://github.com/kurtosis-tech/playground-gitpod).
 
 To blow away the created [enclave][enclaves-reference], run `kurtosis clean -a`.
 
@@ -29,12 +32,11 @@ You can configure this package using the JSON structure below. The default value
 
 NOTE: the `//` lines are not valid JSON; you will need to remove them!
 
-<!-- TODO Parameterize your package as you prefer; see https://docs.kurtosis.com/next/concepts-reference/args for more -->
 ```javascript
-// See this to learn more about these parameters.
+// See https://docs.readyset.io/reference/cli/readyset/ to learn more about these parameters.
 {
-    // the database url (required) - replace with your database url
-    "upstream_db_url": "mysql://root:password@hostname/database",
+    // the underlying database url (required)
+    "upstream_db_url": "mysql://root:password@hostname/database", // replace with your database url
     
     "standalone": "1",
     
