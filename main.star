@@ -30,7 +30,7 @@ def run(plan, args):
     if application_protocol != "postgresql" and application_protocol != "mysql":
         fail(ERROR_MESSAGE)
 
-    listen_port = args.get(LISTEN_PORT_KEY, None):
+    listen_port = args.get(LISTEN_PORT_KEY, None)
 
     if listen_port == None:
         if application_protocol == "postgresql":
