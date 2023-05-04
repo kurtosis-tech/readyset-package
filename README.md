@@ -1,19 +1,25 @@
-My Package
+Readyset Package
 ============
-This is a [Kurtosis package](https://docs.kurtosis.com/concepts-reference/packages). It doesn't do much now, but it will soon!
+This is a [Kurtosis package](https://docs.kurtosis.com/concepts-reference/packages). It allows you to run [`readyset`](https://readyset.io/) cache which can improve performance for your `SQL` queries.
 
 Run this package
 ----------------
-If you have [Kurtosis installed][install-kurtosis], run:
 
-<!-- TODO replace YOURUSER and THISREPO with the correct values -->
-```bash
-kurtosis run github.com/YOURUSER/THISREPO
+Assuming that you have either `postgres` or `mysql` database running, replace `UPSTREAM_DB_URL_CONNECTION_STRING` with your connection string. 
+
+**IMPORTANT: Do not use `localhost` or `127.0.0.1`, instead use the IP Address as `hostname` for `upstream_db_url`.**
+
+The schema for creating a connection string is shown below. For more information regarding `upstream_db_url` , refer to the documentation [here](https://docs.readyset.io/reference/cli/readyset/#-upstream-db-url). 
+
+```
+[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database>[?<extra_options>]
 ```
 
-<!-- TODO Add a URL-encoded version of github.com/YOURUSER/THISREPO to right after "KURTOSIS_PACKAGE_LOCATOR=" in the link below -->
-<!-- TODO You can URL-encode a string using https://www.urlencoder.org/ -->
-If you don't have Kurtosis installed, [click here to run this package on the Kurtosis playground](https://gitpod.io/#KURTOSIS_PACKAGE_LOCATOR=/https://github.com/kurtosis-tech/playground-gitpod).
+If you have [Kurtosis installed][install-kurtosis], run:
+
+```bash
+kurtosis run github.com/kurtosis-tech/readyset-package '{"upstream_db_url": "UPSTREAM_DB_URL_CONNECTION_STRING"}'
+```
 
 To blow away the created [enclave][enclaves-reference], run `kurtosis clean -a`.
 
@@ -22,32 +28,36 @@ To blow away the created [enclave][enclaves-reference], run `kurtosis clean -a`.
 <details>
     <summary>Click to see configuration</summary>
 
-You can configure this package using the JSON structure below. The default values for each parameter are shown.
+You can configure this package using the JSON structure below. The default values for each parameter are shown. 
 
 NOTE: the `//` lines are not valid JSON; you will need to remove them!
 
-<!-- TODO Parameterize your package as you prefer; see https://docs.kurtosis.com/next/concepts-reference/args for more -->
 ```javascript
+// See https://docs.readyset.io/reference/cli/readyset/ to learn more about these parameters.
 {
-    // The name to print
-    "name": "John Snow"
+    // the underlying database url (required)
+    "upstream_db_url": "mysql://root:password@hostname/database", // replace with your database url
+    "standalone": "1",
+    "query_caching": "explicit",
+    "deployment": "kurtosis-readyset-deployment",
+    "listen_port": "3307",
+    "service_name": "readyset"
 }
 ```
 
-The arguments can then be passed in to `kurtosis run`.
+You can store the JSON args in a file, and use command expansion to slot them in:
+
+```bash
+kurtosis run github.com/kurtosis-tech/readyset-package "$(cat args.json)"
+```
+
+The arguments can then be passed in to `kurtosis run` like:
 
 For example:
 
 <!-- TODO replace YOURUSER and THISREPO with the correct values -->
 ```bash
-kurtosis run github.com/YOURUSER/THISREPO '{"name":"Maynard James Keenan"}'
-```
-
-You can also store the JSON args in a file, and use command expansion to slot them in:
-
-<!-- TODO replace YOURUSER and THISREPO with the correct values -->
-```bash
-kurtosis run github.com/YOURUSER/THISREPO "$(cat args.json)"
+kurtosis run github.com/kurtosis-tech/readyset-package '{"upstream_db_url": "mysql://root:password@hostname/database", "service_name": "readyset_mysql"}'
 ```
 
 </details>
@@ -60,7 +70,7 @@ Kurtosis packages can be composed inside other Kurtosis packages. To use this pa
 First, import this package by adding the following to the top of your Starlark file:
 
 ```python
-this_package = import_module("github.com/YOURUSER/THISREPO/main.star")
+this_package = import_module("github.com/kurtosis-tech/readyset-package/main.star")
 ```
 
 Then, call the this package's `run` function somewhere in your Starlark script:
