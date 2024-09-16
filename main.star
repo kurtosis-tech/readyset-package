@@ -1,6 +1,6 @@
 # NOTE: If you're a VSCode user, you might like our VSCode extension: https://marketplace.visualstudio.com/items?itemName=Kurtosis.kurtosis-extension
 
-default = import_module("github.com/kurtosis-tech/readyset-package/default.star")
+default = import_module("./default.star")
  
 UPSTREAM_DB_URL_KEY = "upstream_db_url"
 STANDALONE_KEY = "standalone"
@@ -9,7 +9,7 @@ DEPLOYMENT_KEY = "deployment"
 LISTEN_PORT_KEY = "listen_port"
 SERVICE_NAME_KEY = "service_name"
 
-READYSET_PORT_NAME_KEY = "ready_set_port"
+READYSET_PORT_NAME_KEY = "ready-set-port"
 
 ERROR_MESSAGE = "`upstream_db_url` is not configured properly. The `upstream_db_url` should match the pattern `[postgresql|mysql]://<user>:<password>@<hostname>[:<port>]/<database[?<extra_options>]`"
 
